@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medallion Architecture in OCI - Flowchart</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 20px;
+        }
+        
+        .header h1 {
+            color: #2d3748;
+            font-size: 28px;
+            margin: 0;
+            font-weight: 700;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 16px;
+            margin: 10px 0 0 0;
+        }
+        
+        .flowchart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .layer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+        }
+        
+        .layer-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            flex: 1;
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .layer-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
+        .bronze {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            border-color: #ea580c;
+        }
+        
+        .silver {
+            background: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
+            border-color: #6b7280;
+        }
+        
+        .gold {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-color: #d97706;
+        }
+        
+        .layer-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a202c;
+        }
+        
+        .layer-subtitle {
+            font-size: 14px;
+            color: #4a5568;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+        
+        .layer-content {
+            font-size: 13px;
+            color: #2d3748;
+            line-height: 1.4;
+        }
+        
+        .layer-content ul {
+            margin: 8px 0 0 0;
+            padding-left: 16px;
+        }
+        
+        .layer-content li {
+            margin-bottom: 4px;
+        }
+        
+        .arrow {
+            font-size: 24px;
+            color: #4a5568;
+            margin: 5px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .governance-section {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            gap: 20px;
+        }
+        
+        .governance-box {
+            background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+            border: 2px solid #8b5cf6;
+            border-radius: 12px;
+            padding: 20px;
+            flex: 1;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .governance-box:hover {
+            transform: translateY(-3px);
+        }
+        
+        .governance-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #5b21b6;
+            margin-bottom: 10px;
+        }
+        
+        .governance-content {
+            font-size: 13px;
+            color: #4c1d95;
+            text-align: left;
+        }
+        
+        .data-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 20px 0;
+            padding: 0 20px;
+        }
+        
+        .flow-arrow {
+            font-size: 30px;
+            color: #667eea;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .key-benefits {
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border: 2px solid #16a34a;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .benefits-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #15803d;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .benefit-item {
+            background: rgba(255,255,255,0.7);
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #166534;
+        }
+        
+        .download-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .layer {
+                flex-direction: column;
+            }
+            .governance-section {
+                flex-direction: column;
+            }
+            .download-btn {
+                position: static;
+                margin: 20px auto;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="download-btn" onclick="downloadFlowchart()">📥 Download PDF</button>
+        
+        <div class="header">
+            <h1>Medallion Architecture in Oracle Cloud Infrastructure (OCI)</h1>
+            <p>A Structured Approach to Data Integration, Transformation & Lifecycle Management</p>
+        </div>
+        
+        <div class="flowchart">
+            <!-- Data Sources -->
+            <div class="layer">
+                <div class="layer-box" style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-color: #0284c7;">
+                    <div class="layer-title">Data Sources</div>
+                    <div class="layer-subtitle">Raw Data Input</div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>Batch file imports</li>
+                            <li>Database exports</li>
+                            <li>External system feeds</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Bronze Layer -->
+            <div class="layer">
+                <div class="layer-box bronze">
+                    <div class="layer-title">🥉 Bronze Layer</div>
+                    <div class="layer-subtitle">Raw Data Ingestion & Archive</div>
+                    <div class="layer-content">
+                        <strong>Primary Functions:</strong>
+                        <ul>
+                            <li>Store raw, untransformed data</li>
+                            <li>Reliable archive for original source data</li>
+                            <li>Support reprocessing & error recovery</li>
+                            <li>Enable continuous data appends</li>
+                        </ul>
+                        <strong>Storage:</strong> OCI Object Storage
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Silver Layer -->
+            <div class="layer">
+                <div class="layer-box silver">
+                    <div class="layer-title">🥈 Silver Layer</div>
+                    <div class="layer-subtitle">Data Cleansing & Enhancement</div>
+                    <div class="layer-content">
+                        <strong>Transformations:</strong>
+                        <ul>
+                            <li>Data cleaning & duplicate removal</li>
+                            <li>Handle null/missing values</li>
+                            <li>Apply filtering rules</li>
+                            <li>Basic enrichments</li>
+                            <li>Ensure data governance compliance</li>
+                        </ul>
+                        <strong>Output:</strong> Clean, conformed dataset
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Gold Layer -->
+            <div class="layer">
+                <div class="layer-box gold">
+                    <div class="layer-title">🥇 Gold Layer</div>
+                    <div class="layer-subtitle">Curated, Business-Ready Data</div>
+                    <div class="layer-content">
+                        <strong>Characteristics:</strong>
+                        <ul>
+                            <li>Aggregated & summarized formats</li>
+                            <li>Aligned with business metrics</li>
+                            <li>Authorized user access controls</li>
+                            <li>Optimized for fast query performance</li>
+                        </ul>
+                        <strong>Use Cases:</strong> Reporting, Analytics, Dashboards
+                    </div>
+                </div>
+            </div>
+            
+            <div class="arrow">⬇️</div>
+            
+            <!-- Business Applications -->
+            <div class="layer">
+                <div class="layer-box" style="background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border-color: #16a34a;">
+                    <div class="layer-title">Business Applications</div>
+                    <div class="layer-subtitle">Decision Making & Analytics</div>
+                    <div class="layer-content">
+                        <ul>
+                            <li>Executive dashboards</li>
+                            <li>Business intelligence reports</li>
+                            <li>Performance analytics</li>
+                            <li>Strategic decision support</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Governance Section -->
+        <div class="governance-section">
+            <div class="governance-box">
+                <div class="governance-title">🔒 Data Masking</div>
+                <div class="governance-content">
+                    <strong>Tools:</strong> Oracle Data Safe, Oracle Data Redaction<br><br>
+                    <strong>Process:</strong>
+                    <ul>
+                        <li>Register target database in OCI</li>
+                        <li>Discover sensitive data automatically</li>
+                        <li>Define additional sensitive columns</li>
+                        <li>Create & apply masking policy</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="governance-box">
+                <div class="governance-title">🗑️ Data Purging</div>
+                <div class="governance-content">
+                    <strong>Purpose:</strong> Storage efficiency & compliance<br><br>
+                    <strong>Implementation:</strong>
+                    <ul>
+                        <li>Define retention policies</li>
+                        <li>Access Object Storage bucket</li>
+                        <li>Configure Lifecycle Policy Rules</li>
+                        <li>Set deletion/archiving actions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Key Benefits -->
+        <div class="key-benefits">
+            <div class="benefits-title">🎯 Key Architecture Benefits</div>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <strong>Audit & Compliance:</strong> Complete data lineage and retention of original data
+                </div>
+                <div class="benefit-item">
+                    <strong>Scalability:</strong> Leverages OCI's cost-effective, scalable storage solutions
+                </div>
+                <div class="benefit-item">
+                    <strong>Data Quality:</strong> Systematic cleansing and validation at each layer
+                </div>
+                <div class="benefit-item">
+                    <strong>Performance:</strong> Optimized data structures for fast analytics
+                </div>
+                <div class="benefit-item">
+                    <strong>Governance:</strong> Comprehensive security and compliance controls
+                </div>
+                <div class="benefit-item">
+                    <strong>Flexibility:</strong> Adaptable transformation rules for evolving business needs
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function downloadFlowchart() {
+            // Create a new window for printing
+            const printWindow = window.open('', '_blank');
+            
+            // Get the HTML content
+            const htmlContent = document.documentElement.outerHTML;
+            
+            // Write the content to the new window
+            printWindow.document.write(htmlContent);
+            printWindow.document.close();
+            
+            // Add print-specific styles
+            const style = printWindow.document.createElement('style');
+            style.textContent = `
+                @media print {
+                    body { 
+                        background: white !important; 
+                        -webkit-print-color-adjust: exact !important;
+                        print-color-adjust: exact !important;
+                    }
+                    .download-btn { display: none !important; }
+                    .container { 
+                        box-shadow: none !important; 
+                        margin: 0 !important;
+                        max-width: none !important;
+                    }
+                    @page { 
+                        size: A4; 
+                        margin: 0.5in; 
+                    }
+                }
+            `;
+            printWindow.document.head.appendChild(style);
+            
+            // Wait for content to load then print
+            printWindow.onload = function() {
+                setTimeout(() => {
+                    printWindow.print();
+                    printWindow.close();
+                }, 500);
+            };
+        }
+    </script>
+</body>
+</html>
